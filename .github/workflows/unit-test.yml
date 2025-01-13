@@ -8,10 +8,20 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18
+
     - name: Install dependencies
-      run: yarn install
+      run: yarn install --frozen-lockfile
+
+    - name: Create temporary cache directory and file
+      run: |
+        mkdir -p /tmp/cache
+        echo '{}' > /tmp/cache/metadata.json
 
     - name: Run unit tests
       run: yarn test
