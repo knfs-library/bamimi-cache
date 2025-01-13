@@ -21,7 +21,6 @@ jobs:
     - name: Create temporary cache directory and file
       run: |
         mkdir -p /tmp/cache
-        echo '{}' > /tmp/cache/metadata.json
 
     - name: Run unit tests
       run: yarn test
