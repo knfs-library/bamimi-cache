@@ -1,0 +1,39 @@
+{
+  "name": "@knfs-tech/bamimi-cache",
+  "version": "1.0.2",
+  "description": "Cache module",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "exports": {
+    ".": "./lib/cjs/index.js",
+    "./esm": "./lib/esm/index.mjs"
+  },
+  "scripts": {
+    "test": "jest --runInBand --force-exit --detectOpenHandles"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/knfs-library/bamimi-cache.git"
+  },
+  "keywords": [
+    "cache",
+    "file"
+  ],
+  "author": "Kent Phung",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/knfs-library/bamimi-cache/issues"
+  },
+  "homepage": "https://github.com/knfs-library/bamimi-cache#readme",
+  "dependencies": {
+    "fs-extra": "^11.2.0",
+    "snappy": "^7.2.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "sinon": "^18.0.0"
+  }
+}
