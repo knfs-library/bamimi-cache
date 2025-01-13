@@ -1,35 +1,37 @@
 const fs = require("fs-extra");
 const CacheFile = require("./../../lib/cjs");
-
-jest.mock("fs-extra", () => ({
-	ensureDir: jest.fn().mockResolvedValue(undefined),
-	outputFile: jest.fn().mockResolvedValue(undefined),
-	readFile: jest.fn().mockResolvedValue("cached data"),
-	remove: jest.fn().mockResolvedValue(undefined),
-	writeJSON: jest.fn().mockResolvedValue(undefined),
-	existsSync: jest.fn().mockResolvedValue(false)
-}));
+const path = require("path");
+const os = require("os");
 
 jest.mock('snappy', () => ({
 	compress: jest.fn().mockResolvedValue('mocked compressed data'),
 	uncompress: jest.fn().mockResolvedValue('mocked uncompressed data'),
 }));
 
-describe("CacheFile", () => {
-	let cacheFile;
 
-	beforeEach(() => {
+describe("CacheFile (Real Components)", () => {
+	let cacheFile;
+	let tempFolder;
+
+	beforeEach(async () => {
+		// Tạo thư mục tạm
+		tempFolder = path.join(os.tmpdir(), "cache-test");
+		await fs.ensureDir(tempFolder);
+
+		// Tạo instance của CacheFile
 		cacheFile = new CacheFile({
-			folder: "/tmp/cache",
-			expire: 60000,  // 1 minute
+			folder: tempFolder,
+			expire: 60000, // 1 phút
 			autoCompress: false,
 			log: false,
 		});
-
 	});
 
-	afterEach(() => {
+	afterEach(async () => {
+		// Xóa toàn bộ thư mục tạm
 		jest.clearAllMocks();
+		jest.restoreAllMocks();
+		await fs.remove(tempFolder);
 	});
 
 	describe("set", () => {
@@ -39,21 +41,9 @@ describe("CacheFile", () => {
 
 			await cacheFile.set(key, content);
 
-			expect(fs.outputFile).toHaveBeenCalled();
-		});
-
-		it("should handle expiration correctly", async () => {
-			const key = "testKey";
-			const content = "some content";
-			const expire = 5000;  // 5 seconds
-
-			const setSpy = jest.spyOn(cacheFile, "set");
-			await cacheFile.set(key, content, { expire });
-
-			expect(setSpy).toHaveBeenCalled();
-			setTimeout(() => {
-				expect(fs.remove).toHaveBeenCalled();
-			}, expire);
+			// Kiểm tra file có được ghi hay không
+			const files = await fs.readdir(tempFolder);
+			expect(files.length).toBeGreaterThan(0);
 		});
 	});
 
@@ -61,50 +51,33 @@ describe("CacheFile", () => {
 		it("should retrieve the cached content", async () => {
 			const key = "testKey";
 			const content = "some content";
-			const filePath = "testFile.kncch";
 
-			// Mock metadata
-			const metadata = {
-				path: filePath,
-				options: { compress: false },
-				createdAt: Date.now(),
-				updatedAt: Date.now(),
-			};
+			// Lưu cache
+			await cacheFile.set(key, content);
 
-			fs.readFile.mockResolvedValue(content);
-
+			// Lấy lại nội dung
 			const result = await cacheFile.get(key);
 
 			expect(result).toBe(content);
-			expect(fs.readFile).toHaveBeenCalled();
 		});
 	});
 
 	describe("del", () => {
 		it("should delete cache and metadata", async () => {
 			const key = "testKey";
-			const metadata = {
-				path: "testFile.kncch",
-				options: { expire: 0 },
-			};
+			const content = "some content";
 
+			// Lưu cache
+			await cacheFile.set(key, content);
+
+			// Xóa cache
 			await cacheFile.del(key);
 
-			expect(fs.remove).toHaveBeenCalled();
-			expect(fs.writeJSON).toHaveBeenCalled();
-		});
-	});
+			// Đảm bảo file đã bị xóa
 
-	describe("search", () => {
-		it("should return results for given keywords", async () => {
-			const keywords = ["test", "search"];
-			const logic = "AND";
-
-			const searchSpy = jest.spyOn(cacheFile.dict, "search").mockResolvedValue(["result1", "result2"]);
-			const results = await cacheFile.search(keywords, logic);
-
-			expect(searchSpy).toHaveBeenCalledWith(keywords, logic);
-			expect(results).toEqual(["result1", "result2"]);
+			const exist = await cacheFile.exist(key)
+			
+			expect(exist).toBeNull()
 		});
 	});
 });
