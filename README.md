@@ -1,7 +1,7 @@
 <p align="center">
   <br>
-	<a href="https://github.com/knfs-library/bamimi-cache/actions" alt="github">
-	<img src="https://github.com/knfs-library/bamimi-cache/actions/workflows/test.yml/badge.svg" alt="Github Actions" />
+	<a href="https://github.com/knfs-library/bamimi-cache/actions/workflows/unit-test.yml" alt="github">
+	<img src="https://github.com/knfs-library/bamimi-cache/actions/workflows/unit-test.yml/badge.svg" alt="Github Actions" />
 	</a>
 </p>
 
