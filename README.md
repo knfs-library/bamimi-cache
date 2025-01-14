@@ -7,7 +7,7 @@
 
 # About **BAMIMI Cache**
 
-**BAMIMI Cache** is a lightweight, file-based caching library designed for Node.js applications. It provides flexible caching with optional compression, expiration handling, and keyword search capabilities. The library is easy to use and integrates seamlessly into modern applications.
+**BAMIMI Cache** is a lightweight, file-based caching library designed for Node.js applications. It provides flexible caching with optional compression, expiration handling, and keyword search capabilities. The library is easy to use and integrates seamlessly into modern applications.****
 
 ---
 
@@ -72,12 +72,13 @@ await cache.del('user:123');
 #### `new CacheFile(config)`
 Creates a new instance of BAMIMI Cache.
 
-| Parameter             | Type    | Default                  | Description                                 |
-| --------------------- | ------- | ------------------------ | ------------------------------------------- |
-| `config.folder`       | String  | `projectPath + /cache` | Directory to store cached files.            |
-| `config.expire`       | Number  | `0`                      | Default expiration time in milliseconds, (0 is not expire)    |
-| `config.autoCompress` | Boolean | `false`                  | Enable auto-compression for cached content. |
-| `config.log`          | Boolean | `false`                  | Enable or disable logging.                  |
+| Parameter             | Type    | Default                  | Description                                 | Support Version     |
+| --------------------- | ------- | ------------------------ | ------------------------------------------- |-------------|
+| `config.folder`       | String  | `projectPath + /cache` | Directory to store cached files.              | >= 1.0.2
+| `config.expire`       | Number  | `0`                      | Default expiration time in milliseconds, (0 is not expire)    |   >= 1.0.2  |
+| `config.autoCompress` | Boolean | `false`                  | Enable auto-compression for cached content. | >= 1.0.2     |
+| `config.log`          | Boolean | `false`                  | Enable or disable logging.                  | >= 1.0.2     |   
+| `config.peakDuration`  | Number  | `3000`                   | Allows peak time to use cache to store the results returned when getting, to increase query speed. If peakDuration is 0, it means it is not used.  | >= 1.1.3 (Latest)     |
 
 ---
 
@@ -169,7 +170,7 @@ Automatically removes expired entries:
 ```javascript
 await cache.set('tempKey', 'tempData', { expire: 5000 }); // Expires in 5 seconds
 ```
-
+****
 ---
 
 ## Contributions
