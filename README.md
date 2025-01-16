@@ -47,6 +47,7 @@ const cache = new CacheFile({
   autoCompress: true,   // Automatically compress data
   log: true,            // Enable logging
 });
+cache.setup()
 
 // Store data in the cache
 await cache.set('user:123', JSON.stringify({ name: 'John Doe' }), { expire: 60000 });
@@ -83,6 +84,9 @@ Creates a new instance of BAMIMI Cache.
 ---
 
 ### **Methods**
+
+#### **`setup()`**
+Initialize configuration files
 
 #### **`set(key, content, options)`**
 Stores data in the cache.
