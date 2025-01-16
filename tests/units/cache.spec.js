@@ -25,6 +25,8 @@ describe("CacheFile (Real Components)", () => {
 			autoCompress: false,
 			log: false,
 		});
+
+		await cacheFile.setup()
 	});
 
 	afterEach(async () => {

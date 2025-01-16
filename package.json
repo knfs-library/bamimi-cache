@@ -1,6 +1,6 @@
 {
   "name": "@knfs-tech/bamimi-cache",
-  "version": "1.1.5",
+  "version": "1.2.1",
   "description": "Cache module",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
