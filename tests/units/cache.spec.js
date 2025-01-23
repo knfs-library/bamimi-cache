@@ -24,6 +24,7 @@ describe("CacheFile (Real Components)", () => {
 			expire: 60000, // 1 phút
 			autoCompress: false,
 			log: false,
+			maxSize: 2040
 		});
 
 		await cacheFile.setup()
