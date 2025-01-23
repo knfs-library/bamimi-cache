@@ -1,6 +1,6 @@
 {
   "name": "@knfs-tech/bamimi-cache",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "description": "A simple file-based cache system with optional compression and expiration handling. Uses metadata to track cache entries and supports keyword search functionality.",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",

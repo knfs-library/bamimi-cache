@@ -80,7 +80,9 @@ Creates a new instance of BAMIMI Cache.
 | `config.autoCompress` | Boolean | `false`                  | Enable auto-compression for cached content. | >= 1.0.2     |
 | `config.log`          | Boolean | `false`                  | Enable or disable logging.                  | >= 1.0.2     |   
 | `config.peakDuration`  | Number  | `3000`                   | Allows peak time to use cache to store the results returned when getting, to increase query speed. If peakDuration is 0, it means it is not used.  | >= 1.1.3     |
-| `config.maxSize`  | Number  | `0`                   | Default max size of cache content in bytes, (0 is not verify).  | >= 1.2.9 (Latest)     |
+| `config.maxSize`  | Number  | `0`                   | Default max size of cache content in bytes, (0 is not verify).  | >= 1.2.9     |
+| `config.logHandle`  | Number  | use `console.log`                   | Function handle log  | >= 1.3.0 (Latest)     |
+| `config.errorHandle`  | Number  | use `throw new Error`                  | Function handle error.  | >= 1.3.0 (Latest)     |
 
 ---
 

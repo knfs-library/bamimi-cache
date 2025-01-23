@@ -11,6 +11,7 @@
 | 1.2.6   | :white_check_mark: |
 | 1.2.8   | :white_check_mark: |
 | 1.2.9   | :white_check_mark: |
+| 1.3.0   | :white_check_mark: |
 
 
 ## Reporting a Vulnerability
