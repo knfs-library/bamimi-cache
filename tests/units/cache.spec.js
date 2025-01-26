@@ -70,17 +70,13 @@ describe("CacheFile (Real Components)", () => {
 			const key = "testKey";
 			const content = "some content";
 
-			// Lưu cache
 			await cacheFile.set(key, content);
 
-			// Xóa cache
 			await cacheFile.del(key);
-
-			// Đảm bảo file đã bị xóa
 
 			const exist = await cacheFile.exist(key)
 			
-			expect(exist).toBeNull()
+			expect(exist).toBe(false)
 		});
 	});
 });

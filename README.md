@@ -82,7 +82,7 @@ Creates a new instance of BAMIMI Cache.
 | `config.peakDuration`  | Number  | `3000`                   | Allows peak time to use cache to store the results returned when getting, to increase query speed. If peakDuration is 0, it means it is not used.  | >= 1.1.3     |
 | `config.maxSize`  | Number  | `0`                   | Default max size of cache content in bytes, (0 is not verify).  | >= 1.2.9     |
 | `config.logHandle`  | Number  | use `console.log`                   | Function handle log  | >= 1.3.0 (Latest)     |
-| `config.errorHandle`  | Number  | use `throw new Error`                  | Function handle error.  | >= 1.3.0 (Latest)     |
+| `config.errorHandle`  | Number  | use `throw new Error`                  | Function handle error.  | >= 1.3.0     |
 
 ---
 
@@ -122,7 +122,7 @@ Checks if a key exists in the cache.
 | --------- | ------ | -------------------------------- |
 | `key`     | String | Unique identifier for the cache. |
 
-**Returns:** `Promise<Boolean>` - `true` if the key exists, otherwise `false`.
+**Returns:** `Boolean` - `true` if the key exists, otherwise `false`.
 
 ---
 
@@ -143,7 +143,39 @@ Searches for cached entries based on keywords.
 | `keywords` | Array<String>       | `[]`    | Keywords to search for.           |
 | `logic`    | String (`AND`/`OR`) | `AND`   | Logic to apply during the search. |
 
-**Returns:** `Promise<Array<String>>` - Matching cache keys.
+**Returns:** `Array<String>` - Matching cache keys.
+
+---
+
+#### **`publish(key, message)`** (>= 1.5.1)
+Publish event
+
+| Parameter  | Type                | Default | Description                       |
+| ---------- | ------------------- | ------- | --------------------------------- |
+| `key` | String       |     | Key or event.           |
+| `message`    | any |    | Message publish to event. |
+
+---
+
+#### **`subscribe(key, listener)`** (>= 1.5.1)
+Subscribe event
+
+| Parameter  | Type                | Default | Description                       |
+| ---------- | ------------------- | ------- | --------------------------------- |
+| `key` | String       |     | Key or event.           |
+| `logic`    | function(message) |    | Listen event publish. |
+
+*Ex:*
+```javascript
+const storage = new CacheFile(configDefault)
+storage.setup()
+
+storage.subscribe("event-1", async (message) => {
+		console.log("listener 1", message)
+})
+
+storage.publish("event-1", contentNumber)
+```
 
 ---
 
