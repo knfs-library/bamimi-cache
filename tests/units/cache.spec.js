@@ -3,10 +3,13 @@ const CacheFile = require("./../../lib/cjs");
 const path = require("path");
 const os = require("os");
 
-jest.mock('snappy', () => ({
-	compress: jest.fn().mockResolvedValue('mocked compressed data'),
-	uncompress: jest.fn().mockResolvedValue('mocked uncompressed data'),
-}));
+jest.mock('snappy', () => {
+	return {
+		compress: jest.fn().mockResolvedValue('mocked compressed data'),
+		uncompress: jest.fn().mockResolvedValue('mocked uncompressed data'),
+	};
+});
+
 
 
 describe("CacheFile (Real Components)", () => {
