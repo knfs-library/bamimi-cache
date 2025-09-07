@@ -1,16 +1,15 @@
-// buffer.test.js
-const Buffer = require('./../../lib/cjs/buffer'); 
+import BufferCache from './../../src/buffer';
 
-describe('Buffer class', () => {
-	let buffer;
+describe('BufferCache class', () => {
+	let buffer: BufferCache;
 
 	beforeEach(() => {
-		jest.useFakeTimers(); 
-		buffer = new Buffer(1000);
+		jest.useFakeTimers();
+		buffer = new BufferCache(1000);
 	});
 
 	afterEach(() => {
-		buffer.stopCleanup(); 
+		buffer.stopCleanup();
 		jest.useRealTimers();
 	});
 
@@ -31,6 +30,7 @@ describe('Buffer class', () => {
 		jest.spyOn(global.Date, 'now').mockReturnValue(now + 500);
 		buffer.get('key1');
 
+		// @ts-ignore - Accessing private property for testing purposes
 		expect(buffer.storage.get('key1').lastAccessed).toBe(now + 500);
 	});
 
@@ -54,7 +54,7 @@ describe('Buffer class', () => {
 		jest.advanceTimersByTime(500);
 		buffer.cleanup();
 
-		expect(buffer.get('key1')).toBe('value1'); 
+		expect(buffer.get('key1')).toBe('value1');
 	});
 
 	test('should check if key exists', () => {
@@ -66,6 +66,7 @@ describe('Buffer class', () => {
 	test('should stop cleanup interval when stopCleanup is called', () => {
 		const spy = jest.spyOn(global, 'clearInterval');
 		buffer.stopCleanup();
+		// @ts-ignore - Accessing private property for testing purposes
 		expect(spy).toHaveBeenCalledWith(buffer.cleanupInterval);
 	});
 });

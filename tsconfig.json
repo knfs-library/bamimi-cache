@@ -1,17 +1,27 @@
 {
-	"compilerOptions": {
-		"target": "ES2020",
-		"module": "ESNext",
-		"declaration": true,
-		"emitDeclarationOnly": true,
-		"outDir": "types",
-		"allowJs": true,
-		"checkJs": true,
-		"moduleResolution": "node",
-		"esModuleInterop": true,
-		"skipLibCheck": true
-	},
-	"include": [
-		"lib/cjs"
-	]
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "NodeNext",
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "src/**/*.ts",
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "tests"
+  ]
 }

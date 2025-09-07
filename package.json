@@ -1,20 +1,29 @@
 {
   "name": "@knfs-tech/bamimi-cache",
-  "version": "1.6.3",
+  "version": "1.7.0",
   "description": "A simple file-based cache system with optional compression and expiration handling. Uses metadata to track cache entries and supports keyword search functionality.",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "types": "./types/index.d.ts",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
   "exports": {
-    ".": "./lib/cjs/index.js",
-    "./esm": "./lib/esm/index.mjs"
+    ".": {
+      "require": "./dist/cjs/index.js",
+      "import": "./dist/esm/index.mjs",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./esm": {
+      "import": "./dist/esm/index.mjs",
+      "types": "./dist/types/index.d.ts"
+    }
   },
   "scripts": {
-    "test": "jest --runInBand --force-exit --detectOpenHandles"
+    "test": "jest --runInBand --force-exit --detectOpenHandles",
+    "lint": "eslint .",
+    "clean": "rm -rf lib types dist",
+    "build": "tsc -p tsconfig.cjs.json && tsc -p tsconfig.esm.json"
   },
   "files": [
-    "lib",
-    "types"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -36,7 +45,12 @@
     "snappy": "^7.2.2"
   },
   "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^24.3.1",
     "jest": "^29.7.0",
-    "sinon": "^18.0.0"
+    "sinon": "^2.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
   }
 }

@@ -1,20 +1,16 @@
-const fs = require("fs-extra");
-const CacheFile = require("./../../lib/cjs");
-const path = require("path");
-const os = require("os");
+import fs from "fs-extra";
+import CacheFile from "./../../src/index";
+import path from "path";
+import os from "os";
 
-jest.mock('snappy', () => {
-	return {
-		compress: jest.fn().mockResolvedValue('mocked compressed data'),
-		uncompress: jest.fn().mockResolvedValue('mocked uncompressed data'),
-	};
-});
-
-
+jest.mock('snappy', () => ({
+	compress: jest.fn().mockResolvedValue(Buffer.from('mocked compressed data')),
+	uncompress: jest.fn().mockResolvedValue(Buffer.from('mocked uncompressed data')),
+}));
 
 describe("CacheFile (Real Components)", () => {
-	let cacheFile;
-	let tempFolder;
+	let cacheFile: CacheFile;
+	let tempFolder: string;
 
 	beforeEach(async () => {
 		// Tạo thư mục tạm
@@ -30,7 +26,7 @@ describe("CacheFile (Real Components)", () => {
 			maxSize: 2040
 		});
 
-		await cacheFile.setup()
+		await cacheFile.setup();
 	});
 
 	afterEach(async () => {
@@ -77,9 +73,9 @@ describe("CacheFile (Real Components)", () => {
 
 			await cacheFile.del(key);
 
-			const exist = await cacheFile.exist(key)
+			const exist = cacheFile.exist(key);
 			
-			expect(exist).toBe(false)
+			expect(exist).toBe(false);
 		});
 	});
 });

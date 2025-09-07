@@ -10,7 +10,7 @@ const path = require('path');
 /**
  * Listens for messages from the parent thread to delete a file.
  */
-parentPort.on('message', async ({ folder, filePath, key }) => {
+parentPort.on('message', async ({ folder, filePath, key }: { folder: string; filePath: string; key: string }) => {
 	try {
 		/**
 		 * Deletes the file at the specified path.
@@ -20,10 +20,10 @@ parentPort.on('message', async ({ folder, filePath, key }) => {
 		 * Posts a success message back to the parent thread.
 		 */
 		parentPort.postMessage({ status: 'success', key });
-	} catch (error) {
+	} catch (error: unknown) {
 		/**
 		 * Posts an error message back to the parent thread if deletion fails.
 		 */
-		parentPort.postMessage({ status: 'error', key, error: error.message });
+		parentPort.postMessage({ status: 'error', key, error: (error as Error).message });
 	}
 });

@@ -1,44 +1,41 @@
-'use strict';
+/**
+ * @module BufferCache
+ */
+
+interface BufferEntry {
+	value: any;
+	lastAccessed: number;
+}
 
 /**
  * A lightweight buffer class with expiration and automatic cleanup.
  * Stores key-value pairs with optional expiration and last-access tracking.
  */
-export class BufferCache {
+class BufferCache {
+	private storage: Map<string, BufferEntry>;
+	private expirationTime: number;
+	private cleanupInterval: NodeJS.Timeout;
+
 	/**
 	 * Initializes a new Buffer instance.
 	 * 
 	 * @param {number} [exp=1000] - Expiration time in milliseconds for each entry. Defaults to 1000ms.
 	 */
-	constructor(exp = 1000) {
-		/**
-		 * Internal Map to store buffer entries.
-		 * @type {Map<string, {value: any, lastAccessed: number}>}
-		 */
-		this.storage = new Map();
-
-		/**
-		 * Expiration time for each entry in milliseconds.
-		 * @type {number}
-		 */
+	constructor(exp: number = 1000) {
+		this.storage = new Map<string, BufferEntry>();
 		this.expirationTime = exp;
-
-		/**
-		 * Interval ID for automatic cleanup.
-		 * @type {NodeJS.Timer}
-		 */
 		this.cleanupInterval = setInterval(() => {
 			this.cleanup();
-		}, exp);
+		}, exp * 2);
 	}
 
 	/**
 	 * Adds a key-value pair to the buffer.
 	 * 
 	 * @param {string} key - The key to identify the stored value.
-	 * @param {*} value - The value to store in the buffer.
+	 * @param {any} value - The value to store in the buffer.
 	 */
-	set(key, value) {
+	set(key: string, value: any): void {
 		const now = Date.now();
 		this.storage.set(key, { value, lastAccessed: now });
 	}
@@ -48,9 +45,9 @@ export class BufferCache {
 	 * Updates the last accessed time for the key.
 	 * 
 	 * @param {string} key - The key to retrieve the value for.
-	 * @returns {*} - The value associated with the key, or `undefined` if the key does not exist.
+	 * @returns {any | undefined} - The value associated with the key, or `undefined` if the key does not exist.
 	 */
-	get(key) {
+	get(key: string): any | undefined {
 		const entry = this.storage.get(key);
 
 		if (entry) {
@@ -67,17 +64,17 @@ export class BufferCache {
 	 * @param {string} key - The key to check for existence.
 	 * @returns {boolean} - `true` if the key exists, otherwise `false`.
 	 */
-	has(key) {
+	has(key: string): boolean {
 		return this.storage.has(key);
 	}
 
 	/**
-	 * Deletes a key in the buffer.
+	 * Delete key in buffer
 	 * 
-	 * @param {string} key - The key to delete.
-	 * @returns {boolean} - `true` if the key was deleted, otherwise `false`.
+	 * @param {string} key - The key to check for existence.
+	 * @returns {boolean} - `true` if the key exists, otherwise `false`.
 	 */
-	del(key) {
+	del(key: string): boolean {
 		return this.storage.delete(key);
 	}
 
@@ -85,19 +82,23 @@ export class BufferCache {
 	 * Removes expired entries from the buffer.
 	 * An entry is considered expired if its last accessed time exceeds the expiration time.
 	 */
-	cleanup() {
-		const now = Date.now();
-		for (const [key, entry] of this.storage) {
-			if (now - entry.lastAccessed > this.expirationTime) {
-				this.storage.delete(key);
+	cleanup(): void {
+		try {
+			const now = Date.now();
+			for (const [key, entry] of this.storage) {
+				if (now - entry.lastAccessed > this.expirationTime) {
+					this.storage.delete(key);
+				}
 			}
+		} catch (error) {
+			console.error("Error during cleanup:", error);
 		}
 	}
 
 	/**
 	 * Stops the automatic cleanup process by clearing the interval.
 	 */
-	stopCleanup() {
+	stopCleanup(): void {
 		clearInterval(this.cleanupInterval);
 	}
 }
